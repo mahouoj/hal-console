@@ -253,42 +253,51 @@ void player_draw_shadow(Player* player) {
     const int probs = 2;
 
     Vec3 right = world_view_get_right();
-    // Vec3 forward = world_view_get_forward();
-    // Vec3 offset_desired_right = vec3_multiply(right, player->desired_direction.x * 0.25);
-    // Vec3 offset_desired_forward = vec3_multiply(forward, player->desired_direction.z * 0.5);
-    // Vec3 pos_offset = vec3_add(vec3_add(player->pos, offset_desired_right), offset_desired_forward);
+    Vec2 desired_offset{ player->desired_direction.x, -player->desired_direction.z };
     Vec3 shadow_prob_pos[probs] = {
         player->pos,
-        // { player->pos.x + 0.2f, player->pos.y, player->pos.z}
         vec3_add(player->pos, vec3_multiply(right, 0.2f))
     };
     BlockInfo block_info;
-    float player_z = world_view_top_get_z_value(world_view_get_camera_top()->dir,
-        floor(player->pos.x),
-        floor(player->pos.z));
-    Vec2 desired_offset{ player->desired_direction.x, -player->desired_direction.z };
+
     for (int i = 0; i < probs; ++i) {
-        world_get_block_info_below(&block_info, shadow_prob_pos[i]);
+        //float player_z = world_view_top_get_z_value(world_view_get_camera_top()->dir,
+        //    floor(player->pos.x),
+        //    floor(player->pos.z));
+        //world_get_block_info_below(&block_info, shadow_prob_pos[i]);
+
+        float player_z = world_view_top_get_z_value(world_view_get_camera_top()->dir,
+            floor(player->pos.x),
+            floor(player->pos.z));
+
+        float player_pixel_x = player->pos_screen.x + i + desired_offset.x;
+        float player_pixel_y = player->pos_screen.y + desired_offset.y;
+        // float player_z = buffer_z_get_at(player_pixel_x, player_pixel_y );
+
+        Vec3 player_world_pos = world_view_top_screen2world(world_view_get_camera_top(),
+            Vec2{ player_pixel_x + 0.125f, player_pixel_y + (desired_offset.y < 0 ? 1.1f : 1.0f) }, round(player->pos.y));
+        world_get_block_info_below(&block_info, player_world_pos);
+
         if (block_info.block) {
             Color shadow_color = cube_get_shadow_color(&block_info);
             Pixel shadow_pixels[2] = {
                 create_pixel(L'\u2584', shadow_color), // top
                 create_pixel(L'\u2580', shadow_color) // down
             };
-            shadow_prob_pos[i].y = block_info.pos.y + 1;
+            player_world_pos.y = block_info.pos.y + 1;
             Coord2 shadow_pos_screen = coord2_round(
-                world_view_top_world2screen(world_view_get_camera_top(), shadow_prob_pos[i])
+                world_view_top_world2screen(world_view_get_camera_top(), player_world_pos)
             );
 
             for (int y = 0; y < 2; ++y) {
-                int pixel_x = shadow_pos_screen.x - 1 + desired_offset.x;
-                int pixel_y = shadow_pos_screen.y - 1 + y + desired_offset.y;
-                float depth_z = buffer_z_get_at(pixel_x, pixel_y);
-                bool visible = depth_z <= player_z;
-                if (depth_z == player_z + 1 && desired_offset.y == 1) { // fix flash
+                int pixel_x = player_pixel_x;
+                int pixel_y = shadow_pos_screen.y - 1 + y;
+                float  depth_z = buffer_z_get_at(pixel_x, pixel_y);
+                bool visible = depth_z >= player_z;
+                if (depth_z == player_z + 1) { // fix flash
                     Vec3 forward = world_view_get_forward();
-                    visible = !world_get_visible_block_at(floorf(player->pos.x) - forward.x, player->pos.y, floorf(player->pos.z) - forward.z)
-                        && world_get_visible_block_at(floorf(player->pos.x) - forward.x, player->pos.y - 1, floorf(player->pos.z) - forward.z);
+                    visible = !world_get_visible_block_at(block_info.pos.x - forward.x, block_info.pos.y + 1, block_info.pos.z - forward.z)
+                        && world_get_visible_block_at(block_info.pos.x - forward.x, block_info.pos.y, block_info.pos.z - forward.z);
                 }
                 if (visible) {
                     draw_pixel_alpha(pixel_x, pixel_y, shadow_pixels[y]);
@@ -306,8 +315,6 @@ Color player_get_color(Player* player) {
 }
 
 void player_draw(Player* player) {
-    player_draw_shadow(player);
-
     player->pos_screen = coord2_round(
         world_view_top_world2screen(world_view_get_camera_top(), player->pos)
     );
@@ -316,6 +323,9 @@ void player_draw(Player* player) {
     // draw_offset
     player->pos_screen.x -= 1; // half width
     player->pos_screen.y -= 1; // height
+
+    player_draw_shadow(player);
+
     Color player_color = player_get_color(player);
     Pixel pixel_body = create_pixel(player_color);
     Pixel pixel_head = create_pixel(L'"', create_color(255, 255, 255), player_color);

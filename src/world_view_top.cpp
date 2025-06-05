@@ -14,6 +14,7 @@ static int g_world_height;
 static int g_world_width;
 static int g_world_depth;
 
+Vec3 world_view_top_projected2world(const WorldViewTopCamera* camera, Vec2 projected_pos, float world_y);
 Vec2 world_view_top_world2projected(const WorldViewTopCamera* camera, Vec3 world_pos);
 Vec2 world_view_top_get_camera_offset(const WorldViewTopCamera* camera);
 void world_view_top_draw_single(
@@ -156,6 +157,39 @@ Vec2 world_view_top_world2projected(const WorldViewTopCamera* camera, Vec3 world
         };
     }
     }
+}
+
+Vec3 world_view_top_projected2world(const WorldViewTopCamera* camera, Vec2 projected_pos, float world_y)
+{
+    float x = 0.0f, z = 0.0f;
+    switch (camera->dir) {
+    case WorldViewTopDir_Front: {
+        x = projected_pos.x / g_cube_scale_width;
+        z = -(projected_pos.y + world_y * g_cube_scale_height) / g_cube_scale_depth;
+        break;
+    }
+    case WorldViewTopDir_Right: {
+        x = (projected_pos.y + world_y * g_cube_scale_height) / g_cube_scale_depth;
+        z = projected_pos.x / g_cube_scale_width;
+        break;
+    }
+    case WorldViewTopDir_Back: {
+        x = -projected_pos.x / g_cube_scale_width;
+        z = (projected_pos.y + world_y * g_cube_scale_height) / g_cube_scale_depth;
+        break;
+    }
+    case WorldViewTopDir_Left: {
+        x = -(projected_pos.y + world_y * g_cube_scale_height) / g_cube_scale_depth;
+        z = -projected_pos.x / g_cube_scale_width;
+        break;
+    }
+    }
+    return Vec3{ x, world_y, z };
+}
+
+Vec3 world_view_top_screen2world(const WorldViewTopCamera* camera, Vec2 screen_pos, float world_y) {
+    Vec2 projected = vec2_sub(screen_pos, camera->camera_offset);
+    return world_view_top_projected2world(camera, projected, world_y);
 }
 
 Vec2 world_view_top_world2screen(const WorldViewTopCamera* camera, Vec3 world_pos) {

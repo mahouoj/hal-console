@@ -37,5 +37,6 @@ float world_view_top_get_z_value(WorldViewTopDir dir, float x, float z);
 // draw world
 void world_view_top_draw(const WorldViewTopCamera* camera);
 // coordinates
+Vec3 world_view_top_screen2world(const WorldViewTopCamera* camera, Vec2 screen_pos, float world_y);
 Vec2 world_view_top_world2screen(const WorldViewTopCamera* camera, Vec3 world_pos);
 Coord2 world_view_top_get_cube_offset(const WorldViewTopCamera* camera, float x, float y, float z);
