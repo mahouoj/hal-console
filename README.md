@@ -1,8 +1,10 @@
 # hew-console-game
 
-本プロジェクトは、HAL東京進級制作展（HEW）に向けて個人で開発したゲームです。
+本プロジェクトは、進級制作展（HAL EVENT WEEK）に向けて個人で開発したゲームです。
 
 **80×25**のWindowsコンソールをインターフェースとし、**C言語**で実装しています。
+
+<img alt="title" src="doc/title.gif" align="left" width="400">
 
 
 
@@ -14,11 +16,15 @@ Visual Studio 2022
 
 ## 機能
 
-視点の回転
+### 視点の回転
+
+<p float="left">
+<img alt="feature_rotate" src="doc/feature_rotate.gif" height="200">
+<img alt="freature_rotate_frames" src="doc/feature_rotate_frames.png"  height="200">
+</p>
 
 
-
-##　実装方法について
+## 実装方法について
 
 ### ダブルバッファ
 
