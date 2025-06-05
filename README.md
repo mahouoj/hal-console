@@ -4,9 +4,9 @@
 
 **80×25**のWindowsコンソールをインターフェースとし、**C言語**で実装しています。
 
-<img alt="title" src="doc/title.gif" align="left" width="400">
-
-
+<p>
+<img alt="title" src="doc/title.gif"  width="400">
+</p>
 
 ## 開発環境
 
@@ -18,11 +18,10 @@ Visual Studio 2022
 
 ### 視点の回転
 
-<p float="left">
+<p>
 <img alt="feature_rotate" src="doc/feature_rotate.gif" height="200">
 <img alt="freature_rotate_frames" src="doc/feature_rotate_frames.png"  height="200">
 </p>
-
 
 ## 実装方法について
 
