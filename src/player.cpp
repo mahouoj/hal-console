@@ -294,7 +294,7 @@ void player_draw_shadow(Player* player) {
                 int pixel_y = shadow_pos_screen.y - 1 + y;
                 float  depth_z = buffer_z_get_at(pixel_x, pixel_y);
                 bool visible = depth_z >= player_z;
-                if (depth_z == player_z + 1) { // fix flash
+                if (depth_z > player_z) { // fix flash
                     Vec3 forward = world_view_get_forward();
                     visible = !world_get_visible_block_at(block_info.pos.x - forward.x, block_info.pos.y + 1, block_info.pos.z - forward.z)
                         && world_get_visible_block_at(block_info.pos.x - forward.x, block_info.pos.y, block_info.pos.z - forward.z);
