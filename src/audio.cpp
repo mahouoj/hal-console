@@ -14,14 +14,6 @@ static bool g_sound_playing[AudioSound_Num];
 // status
 static int g_bgm_current = 0; // 0 for error so never happening
 
-//Audio* audio_get_audio() {
-//    return &g_audio;
-//}
-
-// MesmerizingGalaxyLoop
-// bpm 124
-// len 92970
-
 void audio_init() {
     // load all audios here
     g_handles_bgm[AudioBgm_Game] = opensound((char *)"assets/audios/MesmerizingGalaxyLoop.mp3");
@@ -58,13 +50,17 @@ void audio_destroy() {
 }
 
 void audio_play_bgm(AudioBgm bgm) {
-    if (bgm >= 0 && bgm < AudioBgm_Num && g_handles_bgm[bgm]) {
+    if (bgm >= 0 && bgm < AudioBgm_Num) {
         // valid
         if (g_bgm_current) { // stop current playing bgm
             // TODO: allow multiple??
             stopsound(g_bgm_current);
         }
-        playsound(g_handles_bgm[bgm], 1); // 1 for repeat
+        if (g_handles_bgm[bgm]) {
+            // play sound if audio file opened correctly
+            playsound(g_handles_bgm[bgm], 1); // 1 for repeat
+        }
+        // set rhythm with predefined song info, even if the file does not exist
         timer_init_rhythm(&g_bgm_infos[bgm]);
         g_bgm_current = g_handles_bgm[bgm];
     }
