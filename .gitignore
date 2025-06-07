@@ -1,3 +1,6 @@
+##### Copyright files
+assets/audios/*.mp3
+
 ##### Windows
 # Windows thumbnail cache files
 Thumbs.db
