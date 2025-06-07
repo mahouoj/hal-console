@@ -1,74 +1,47 @@
-# hew-console-game
+# README
 
-本プロジェクトは、進級制作展（HAL EVENT WEEK）に向けて個人で開発したゲームです。
+## 概要
 
-**80×25**のWindowsコンソールをインターフェースとし、**C言語**で実装しています。
+進級制作展（HAL EVENT WEEK）に向けて開発した3Dパズルゲーム
+
+### 進級制作展のルール
+* 個人製作
+* C言語で開発、外部ライブラリを使わない
+* 80×25文字のWindowsコンソールで画面表示
+
+## 特徴
+
+### アイテム収集
+アイテムを全部集めてステージクリア
+* ステージの変化と共に、アイテムが現れる
+* 「順番で集める」 ・ 「時間制限内に見つける」　をチャレンジしよう！
+* だんだん難しくなる３つのステージがある
 
 <p>
-<img alt="title" src="doc/title.gif"  width="400">
+<img alt="feature_collect" src="doc/feature_collect.gif" height="200">
+<img alt="feature_collect_find" src="doc/feature_collect_find.gif" height="200">
+<img alt="feature_collect_stage" src="doc/feature_collect_stage.png" height="200">
 </p>
 
-## 開発環境
-
-Visual Studio 2022
-
-
-
-## 機能
-
-### 視点の回転
-
+### 視点回転
+回転して固定視点では見えないアイテムを見つける
 <p>
 <img alt="feature_rotate" src="doc/feature_rotate.gif" height="200">
 <img alt="freature_rotate_frames" src="doc/feature_rotate_frames.png"  height="200">
 </p>
 
-## 実装方法について
+### 立体感の演出
 
-### ダブルバッファ
+#### 影
+ステージ、プレーヤー、アイテムの影を表示する
+<p>
+<img alt="feature_shadow" src="doc/feature_shadow.gif" height="200">
+<img alt="freature_shadow_frames" src="doc/feature_shadow_frames.png"  height="200">
+</p>
 
-##### データ構造
-
-```c++
-struct Pixel {
-    Color color_fore; // 前景色
-    Color color_back; // 背景色
-    wchar_t text;     // 文字
-    bool fullwidth;   // 全角文字か
-};
-```
-
-＊fullwidthがtrueの場合、次のピクセルを出力しないことで、全角文字を表示する
-
-##### 描画
-
-前フレームのバッファと比べ、変わったピクセルだけを出力する
-
-
-
-#### Console Screen Buffer
-
-コンソールの出力が遅いため、出力の途中過程が見られることがよくある
-
-そこでScreen Bufferを使って、画面全体を切り替える
-
-以下の関数を
-
-初期化
-
-`CreateConsoleScreenBuffer`　
-
-`enableVirtualTerminalProcessing`
-
-
-
-描画
-
-`wsprintf`
-
-`WriteConsole`
-
-`SetConsoleActiveScreenBuffer`
-
-
-
+#### シルエット表示
+プレーヤーが物陰に隠れた時にシルエットを表示する
+<p>
+<img alt="feature_shadow" src="doc/feature_silhouette.gif" height="200">
+<img alt="freature_shadow_frames" src="doc/feature_silhouette_frames.png"  height="200">
+</p>
