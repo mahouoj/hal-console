@@ -109,14 +109,14 @@ A Fast Voxel Traversal Algorithm for Ray Tracing (Amanatides, John & Woo, Andrew
 
 #### レイの生成
 ##### 方向
-正面視点と一致するため、レイは水平面と角度$\theta$（$\tan\theta=2$）となす 
+正面視点と一致するため、レイは水平面と角度 `θ (tanθ = 2)`となす 
 <p>
 <img alt="implement_raycast_direction" src="images/implement_raycast_direction.png" height="150">
 </p>
 前方向の場合：
 
- * レイの方向：$(0, -\frac{2\sqrt{5}}{5}, \frac{\sqrt{5}}{5})$
- 
+ * レイの方向：`(0, -2/sqrt(5), 1/sqrt(5))`
+
 
 マップの回転はレイを逆方向に回転させて実現する  
 
@@ -124,8 +124,9 @@ A Fast Voxel Traversal Algorithm for Ray Tracing (Amanatides, John & Woo, Andrew
 スクリーン中心を視点中心からレイの逆方向を沿って移動  
 スクリーンの横、縦方向をワールド座標に変換し、一個のピクセルの大きさを調整すると、正面視点と一致になる  
 前方向の場合：
-* スクリーン横方向：$(0.25, 0, 0)$
-* スクリーン縦方向：$(0, -0.2, -0.4)$
+
+* スクリーン横方向：`(0.25, 0, 0)`
+* スクリーン縦方向：`(0, -0.2, -0.4)`
 
 #### オブジェクト表示
 レイとオブジェクト（プレーヤーやアイテム）の当たり判定は、レイとブロック表面との交点座標から近似する
