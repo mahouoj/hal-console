@@ -13,8 +13,6 @@
 
 #include "player_move.h"
 
-#define CONIOEX
-#include "conioex.h"
 #include <cmath>
 #include <memory.h>
 
@@ -163,51 +161,13 @@ void player_update_default(Player* player) {
         }
         return;
     }
-
-    // movement
-    //Vec3 direction{ 0, 0, 0 };
-    //Vec3 desired_direction{ 0, 0, 0 };
-    //// if (GetKeyPress(KEY_UP)) {
-    //// if (inport(PK_UP)) {
-    //if (input_if_key_pressed(InputKey_Up)) {
-    //    // direction.z += 1;
-    //    desired_direction.z += 1;
-    //    direction = vec3_add(direction, world_view_get_forward());
-    //}
-    //// if (GetKeyPress(KEY_DOWN)) {
-    //// if (inport(PK_DOWN)) {
-    //if (input_if_key_pressed(InputKey_Down)) {
-    //    // direction.z -= 1;
-    //    desired_direction.z -= 1;
-    //    direction = vec3_sub(direction, world_view_get_forward());
-    //}
-    //// if (inport(PK_LEFT)) {
-    //if (input_if_key_pressed(InputKey_Left)) {
-    //    // if (GetKeyPress(KEY_LEFT)) {
-    //    // direction.x -= 1;
-    //    desired_direction.x -= 1;
-    //    direction = vec3_sub(direction, world_view_get_right());
-    //    player->face_left = true;
-    //}
-    //// if (inport(PK_RIGHT)) {
-    //if (input_if_key_pressed(InputKey_Right)) {
-    //    // if (GetKeyPress(KEY_RIGHT)) {
-    //    // direction.x += 1;
-    //    desired_direction.x += 1;
-    //    direction = vec3_add(direction, world_view_get_right());
-    //    player->face_left = false;
-    //}
-    //player->desired_direction = desired_direction;
-
     Vec3 direction = player_move_get_input_direction(player);
 
-    bool jump = input_if_key_pressed(InputKey_Jump); // inport(PK_SP);
+    bool jump = input_if_key_pressed(InputKey_Jump);
 
-    // if (inport(PK_A)) {
     if (input_if_key_pressed(InputKey_RotateLeft)) {
         world_view_start_rotation(-1);
     }
-    // if (inport(PK_D)) {
     if (input_if_key_pressed(InputKey_RotateRight)) {
         world_view_start_rotation(1);
     }

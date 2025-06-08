@@ -1,6 +1,4 @@
 #include "scene_ending.h"
-#define CONIOEX
-#include "conioex.h"
 #include "scene.h"
 #include "draw.h"
 #include "world.h"
@@ -10,6 +8,7 @@
 #include "input.h"
 #include "timer.h"
 #include "item.h"
+#include <cmath>
 
 static float g_rotation_countdown;
 

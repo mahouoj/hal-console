@@ -1,7 +1,6 @@
 #include "input.h"
-
-#define CONIOEX
-#include "conioex.h"
+#include "platform.h"
+#include <windows.h> // virtual keys
 
 static InputType g_input_type;
 static KeyState g_key_states[InputKey_Num];
@@ -25,15 +24,16 @@ enum InputBtnController {
 };
 
 enum InputBtnKeyboard {
-	InputBtnKeyboard_Up = PK_UP,
-	InputBtnKeyboard_Right = PK_RIGHT,
-	InputBtnKeyboard_Down = PK_DOWN,
-	InputBtnKeyboard_Left = PK_LEFT,
-	InputBtnKeyboard_Jump = PK_SP,
-	InputBtnKeyboard_RotateLeft = PK_A,
-	InputBtnKeyboard_RotateRight = PK_D,
-	InputBtnKeyboard_Confirm = PK_ENTER,
-	InputBtnKeyboard_Retry = PK_R
+	InputBtnKeyboard_Up = VK_UP,
+	InputBtnKeyboard_Right = VK_RIGHT,
+	InputBtnKeyboard_Down = VK_DOWN,
+	InputBtnKeyboard_Left = VK_LEFT,
+	InputBtnKeyboard_Jump = VK_SPACE,
+	InputBtnKeyboard_RotateLeft = 'A', // 0x41
+	InputBtnKeyboard_RotateRight = 'D', // 0x44
+	InputBtnKeyboard_Confirm = VK_RETURN,
+	InputBtnKeyboard_Retry = 'R', // 0x52
+	InputBtnKeyboard_Exit = VK_ESCAPE
 };
 
 void input_set_key_press(InputKey key, bool press);
@@ -61,15 +61,16 @@ void input_update() {
 }
 
 void input_update_keyboard() {
-	input_set_key_press(InputKey_Up, inport(PK_UP));
-	input_set_key_press(InputKey_Right, inport(PK_RIGHT));
-	input_set_key_press(InputKey_Down, inport(PK_DOWN));
-	input_set_key_press(InputKey_Left, inport(PK_LEFT));
-	input_set_key_press(InputKey_RotateLeft, inport(PK_A));
-	input_set_key_press(InputKey_RotateRight, inport(PK_D));
-	input_set_key_press(InputKey_Jump, inport(PK_SP));
-	input_set_key_press(InputKey_Confirm, inport(PK_ENTER));
-	input_set_key_press(InputKey_Retry, inport(PK_R));
+	input_set_key_press(InputKey_Up, platform_getkey(InputBtnKeyboard_Up));
+	input_set_key_press(InputKey_Right, platform_getkey(InputBtnKeyboard_Right));
+	input_set_key_press(InputKey_Down, platform_getkey(InputBtnKeyboard_Down));
+	input_set_key_press(InputKey_Left, platform_getkey(InputBtnKeyboard_Left));
+	input_set_key_press(InputKey_RotateLeft, platform_getkey(InputBtnKeyboard_RotateLeft));
+	input_set_key_press(InputKey_RotateRight, platform_getkey(InputBtnKeyboard_RotateRight));
+	input_set_key_press(InputKey_Jump, platform_getkey(InputBtnKeyboard_Jump));
+	input_set_key_press(InputKey_Confirm, platform_getkey(InputBtnKeyboard_Confirm));
+	input_set_key_press(InputKey_Retry, platform_getkey(InputBtnKeyboard_Retry));
+	input_set_key_press(InputKey_Exit, platform_getkey(InputBtnKeyboard_Exit));
 }
 
 // keyboard or controller
@@ -86,19 +87,20 @@ void input_update_controller_keyboard() {
 		return; // TODO
 	}
 	int btn = joyInfo.dwButtons;
-	input_set_key_press(InputKey_Jump, (btn & InputBtnController_Jump) || inport(InputBtnKeyboard_Jump));
-	input_set_key_press(InputKey_Confirm, (btn & InputBtnController_Confirm) || inport(InputBtnKeyboard_Confirm));
-	input_set_key_press(InputKey_Retry, (btn & InputBtnController_Retry) || inport(InputBtnKeyboard_Retry));
-	input_set_key_press(InputKey_RotateLeft, (btn & InputBtnController_RotateLeft) || inport(InputBtnKeyboard_RotateLeft));
-	input_set_key_press(InputKey_RotateRight, (btn & InputBtnController_RotateRight) || inport(InputBtnKeyboard_RotateRight));
+	input_set_key_press(InputKey_Jump, (btn & InputBtnController_Jump) || platform_getkey(InputBtnKeyboard_Jump));
+	input_set_key_press(InputKey_Confirm, (btn & InputBtnController_Confirm) || platform_getkey(InputBtnKeyboard_Confirm));
+	input_set_key_press(InputKey_Retry, (btn & InputBtnController_Retry) || platform_getkey(InputBtnKeyboard_Retry));
+	input_set_key_press(InputKey_RotateLeft, (btn & InputBtnController_RotateLeft) || platform_getkey(InputBtnKeyboard_RotateLeft));
+	input_set_key_press(InputKey_RotateRight, (btn & InputBtnController_RotateRight) || platform_getkey(InputBtnKeyboard_RotateRight));
+	input_set_key_press(InputKey_Exit, platform_getkey(InputBtnKeyboard_Exit));
 	// move
 	int xpos = joyInfo.dwXpos;
 	int ypos = joyInfo.dwYpos;
 	int pov = joyInfo.dwPOV;
-	bool up = inport(InputBtnKeyboard_Up);
-	bool right = inport(InputBtnKeyboard_Right);
-	bool down = inport(InputBtnKeyboard_Down);
-	bool left = inport(InputBtnKeyboard_Left);
+	bool up = platform_getkey(InputBtnKeyboard_Up);
+	bool right = platform_getkey(InputBtnKeyboard_Right);
+	bool down = platform_getkey(InputBtnKeyboard_Down);
+	bool left = platform_getkey(InputBtnKeyboard_Left);
 	switch (pov) {
 	case InputBtnController_Up: {
 		up = true;

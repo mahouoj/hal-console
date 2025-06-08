@@ -1,7 +1,5 @@
 
 #include "color.h"
-#define CONIOEX
-#include "conioex.h"
 // color
 bool if_color_equal(Color c1, Color c2) {
 	return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b;
@@ -16,9 +14,9 @@ Color create_color(int r, int g, int b) {
 
 Color create_color(int colorCode) {
 	switch (colorCode) {
-	case WHITE:
+	case ColorPreset_White:
 		return Color{ 255, 255, 255 };
-	case BLACK:
+	case ColorPreset_Black:
 		return Color{ 0, 0, 0 };
 	}
 }

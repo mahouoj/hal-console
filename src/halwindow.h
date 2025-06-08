@@ -6,9 +6,6 @@
 #include <fcntl.h>
 #include <io.h>
 
-#define CONIOEX
-#include "conioex.h"
-
 #if defined(_WIN64) || defined(_M_X64)
 #ifndef _DEBUG
 #define show 0
@@ -36,24 +33,6 @@ struct ConsoleSetting {
     DWORD consoleMode;
     int outputMode;
 };
-
-// VTシーケンスモードの有効化
-void enableVTMode() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD dwMode = 0;
-    GetConsoleMode(hOut, &dwMode);
-    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, dwMode);
-}
-
-// VTシーケンスモードの無効化
-void disableVTMode() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD dwMode = 0;
-    GetConsoleMode(hOut, &dwMode);
-    dwMode &= ~ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, dwMode);
-}
 
 //カーソル表示設定(0:非表示 1:表示)
 void setConsoleCursorType(DWORD cursorType) {
@@ -207,7 +186,7 @@ void initWindow(ConsoleSetting* prevConsoleSetting, int width, int height, const
 
     // コンソールウィンドウポジションを変更
     // centerConsoleWindow();
-    setConsoleWindowPosition(0, 0);
+    // setConsoleWindowPosition(0, 0);
 
     // mouse init
     HANDLE hStdin;

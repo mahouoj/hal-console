@@ -32,6 +32,7 @@
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\item.h" />
     <ClInclude Include="src\pixel.h" />
+    <ClInclude Include="src\platform.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\player_move.h" />
     <ClInclude Include="src\scene.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pixel.cpp" />
+    <ClCompile Include="src\platform.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\player_move.cpp" />
     <ClCompile Include="src\scene.cpp" />

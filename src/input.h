@@ -22,6 +22,7 @@ enum InputKey {
 	InputKey_RotateRight,
 	InputKey_Confirm,
 	InputKey_Retry,
+	InputKey_Exit,
 	//
 	InputKey_Num
 };

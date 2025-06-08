@@ -3,11 +3,13 @@
 #include "draw.h"
 #include "scene.h"
 #include "input.h"
-// global contorllers
 #include "timer.h"
 #include "audio.h"
 #include "world.h"
 #include "item.h"
+// timer
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 static ConsoleSetting prevConsoleSetting;
 static int fpsCounter = 0;
@@ -95,11 +97,10 @@ void applicationRun() {
 
             // デバッグ時のみ表示
 #ifdef _DEBUG
-            // DispFPS();
             DispFPSBuffer(fpsCounter);
 #endif
         }
-    } while (!inport(PK_ESC)); // ESC押すまでループ
+    } while (!input_if_key_pressed(InputKey_Exit)); // ESC押すまでループ
 }
 
 void applicationDestroy() {
@@ -108,24 +109,6 @@ void applicationDestroy() {
     buffer_destroy();
     world_destroy();
 }
-
-
-#ifdef _DEBUG
-// =============================================================================
-// デバッグ表示
-// =============================================================================
-void DispFPS()
-{
-    // 色設定
-    textcolor(LIGHTCYAN);
-
-    gotoxy(1, 1);	// 表示位置設定
-    printf("FPS:%d", fpsCounter); // FPS値表示
-
-    // 色設定(もとに戻す)
-    textcolor(WHITE);
-}
-#endif
 
 void update(float deltaTime) {
     updateScene(deltaTime);

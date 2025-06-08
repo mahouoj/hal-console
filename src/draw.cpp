@@ -1,12 +1,7 @@
+#include "draw.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-//#include <fcntl.h>
-//#include <io.h>
-
-#include "draw.h"
-#define CONIOEX
-#include "conioex.h"
+#include <windows.h>
 
 static Pixel* buffer_draw;
 static Pixel* buffer_display[2];
@@ -76,6 +71,23 @@ float *buffer_get_z_buffer() {
 // utils
 
 // console utils
+// @param x X座標(1～)
+// @param y Y座標(1～)
+void gotoxy(int x, int y)
+{
+    COORD c;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    c.X = x - 1;
+    c.Y = y - 1;
+    if (GetConsoleScreenBufferInfo(h, &csbi))
+    {
+        c.Y += csbi.srWindow.Top;
+    }
+    SetConsoleCursorPosition(h, c);
+}
+
 // コンソールウィンドウの表示色をRGB形式で変更
 void set_color_foreground(int r, int g, int b) {
 	wprintf(L"\x1b[38;2;%d;%d;%dm", r, g, b);

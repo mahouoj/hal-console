@@ -3,6 +3,11 @@
 #include "vec.h"
 
 // color
+enum ColorPreset {
+	ColorPreset_Black,
+	ColorPreset_White
+};
+
 struct Color {
 	uint8_t r;
 	uint8_t g;

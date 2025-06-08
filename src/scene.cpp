@@ -1,20 +1,10 @@
-#define CONIOEX
-#include "conioex.h"
+#include "platform.h"
 #include "scene.h"
-//#include "inputkey.h"
-//#include "title.h"
 #include "input.h"
 #include "scene_title.h"
 #include "scene_game.h"
 #include "scene_ending.h"
 
-// test games
-//#include "scene_racing.h"
-//#include "scene_tilemap.h"
-//#include "scene_test_sprite.h"
-//#include "scene_test_fluid.h"
-//#include "scene_test_dungeon.h"
-//#include "scene_test_iso.h"
 // *****************************************************************************
 // グローバル変数
 // *****************************************************************************
@@ -133,10 +123,7 @@ void checkScene(void) {
         // 更新したシーンを初期化を行う
         initScene();
 
-        //HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
-        //FlushConsoleInputBuffer(hStdin);
-        reinport();
-        // 画面クリア
-        // clrscr();
+        // reset keyboard input
+        platform_resetkey();
     }
 }

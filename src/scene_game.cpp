@@ -12,8 +12,6 @@
 #include "audio.h"
 #include "animation.h"
 
-#define CONIOEX
-#include "conioex.h"
 #include "scene.h"
 
 void scene_game_init() {
